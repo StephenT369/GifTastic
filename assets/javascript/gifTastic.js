@@ -1,0 +1,30 @@
+var topics = ['geometric','galaxy space','sacred geometry','polyhedron', 'lasers', 'space travel'];
+
+$(window).on('load', function() {
+
+    
+    for (i = 0; i < topics.length; i++){
+
+        var iTopic = topics[i];
+
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + iTopic + "&api_key=8gvZ9zZfOKVehtKyGxFv7q1RUOTqX9Ri";
+        var buttonText = iTopic;
+        console.log(buttonText);
+        var button = $('<button>').text(buttonText);
+        $(button).appendTo('#buttons');    
+        button.attr('id','giph-buttons');
+       
+        $.ajax({
+            type: "GET",
+            url: queryURL
+        })
+        .then(function(giphyResponse) {
+            var giphs = giphyResponse.data;
+            console.log(giphs);
+            
+            
+            
+            
+        })
+    }
+});
