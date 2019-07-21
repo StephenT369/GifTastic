@@ -16,6 +16,12 @@
     font-weight: bold;
 }
 
+/* IDs */
+
+#addTopic{
+font-weight: bold;
+}
+
 /* html tags */
 img{
     float: left;
