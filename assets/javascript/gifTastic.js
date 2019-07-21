@@ -1,35 +1,44 @@
 //Global variables
-var topics = ['geometric','galaxy space','sacred geometry','polyhedron', 'lasers', 'space travel'];
-var iTopic;
+var topics = ['galaxy space','geometric','sacred geometry','polyhedron', 'lasers', 'space travel'];
 var limit = 10;
 var apiKey = '8gvZ9zZfOKVehtKyGxFv7q1RUOTqX9Ri';
-var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ iTopic +"&api_key="+ apiKey +"&limit="+ limit +"";
 
 //Function to make buttons
 function mkButtons(){
     for (i = 0; i < topics.length; i++){
-         iTopic = topics[i];  
-    
-         var buttonText = iTopic;
+         var buttonText = topics[i];
          var button = $('<button>').text(buttonText);
-         
-         $(button).appendTo('#buttons');    
-         button.attr('id','giph-buttons');
+         $(button).appendTo('#buttons');
+         button.attr('id', 'giph-button');    
+         button.attr('topic', buttonText);
         }
+};
+
+function loopPics(){
+    
 };
 
 //Window load event
 $(window).on('load', function() {
     mkButtons();
+   // loopPics();
 
-     $('button').on('click', function(){
-
+    $('button').on('click', function(){
+        
+        var giphTopic = $(this).attr('topic');
+        $('#giphs').empty();
+        //for (i = 0; i < topics.length; i++){
+        
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ 
+                        giphTopic +"&api_key="+ 
+                        apiKey +"&limit="+ 
+                        limit +"";
+        console.log(queryURL);
         $.ajax({
             url: queryURL,
             method: "GET"
             })
                 .then(function(giphyResponse) {
-                    
                     var giphs = giphyResponse.data;
                     console.log(giphs);
                     for(i = 0; i < giphs.length; i++){
@@ -41,10 +50,13 @@ $(window).on('load', function() {
                     giphDiv.prepend(pTag);
                     giphDiv.prepend(showImage);
                     $('#giphs').prepend(giphDiv);
-               };
-                
+                    };
                 });
-    });
+            //};//for
+
+
+});///click
+    
     });
 
 
