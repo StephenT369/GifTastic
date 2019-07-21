@@ -14,20 +14,14 @@ function mkButtons(){
         }
 };
 
-function loopPics(){
-    
-};
-
 //Window load event
 $(window).on('load', function() {
     mkButtons();
-   // loopPics();
 
     $('button').on('click', function(){
         
         var giphTopic = $(this).attr('topic');
         $('#giphs').empty();
-        //for (i = 0; i < topics.length; i++){
         
         var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ 
                         giphTopic +"&api_key="+ 
@@ -44,19 +38,17 @@ $(window).on('load', function() {
                     for(i = 0; i < giphs.length; i++){
                     var giphDiv = $('<div>');
                     var rating = giphs[i].rating;
-                    var pTag = $('<p>').text('Rating: ' + rating);
+                    var brTag = $('<br>')
+                    var pTag = $('<span>').html('Rating: ' + rating + '<br>');
                     var showImage = $('<img>');
-                    showImage.attr('src', giphs[i].images.fixed_height.url);
-                    giphDiv.prepend(pTag);
-                    giphDiv.prepend(showImage);
+                    showImage.attr('src', giphs[i].images.fixed_height_still.url);
+                    giphDiv.prepend(brTag, pTag);
+                    giphDiv.append(showImage);
+                    
                     $('#giphs').prepend(giphDiv);
                     };
                 });
-            //};//for
-
-
-});///click
-    
+});
     });
 
 
