@@ -37,17 +37,21 @@ function displayPics(){
                 console.log(giphs);
                 for(i = 0; i < giphs.length; i++){
                 var giphDiv = $('<div>').addClass('column');
-                var giphSpan = $('<span>');
                 var rating = giphs[i].rating;
                 var brTag = $('<br>')
                 var spanTag = $('<span>').html('Rating: ' + rating + '<br><br>').addClass('rating');
                 var showImage = $('<img>');
-                showImage.attr('src', giphs[i].images.fixed_height_still.url);
-                giphDiv.prepend(brTag, spanTag);
+                showImage.attr('src', giphs[i].images.fixed_height_still.url).addClass('showGiphs');
 
+                giphDiv.prepend(brTag, spanTag);
                 giphDiv.append(showImage);
-                
                 $('#giphs').prepend(giphDiv);
+                
+                $('.showGiphs').on('click', function(){
+                    showImage.attr('src', giphs[i].images.fixed_height.url);
+                    giphDiv.append(showImage);
+                });
+
                 };
             });
 };
