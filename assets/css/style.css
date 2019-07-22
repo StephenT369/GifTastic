@@ -23,6 +23,21 @@ font-weight: bold;
 }
 
 /* html tags */
+
+body{
+    background:  #f2f2f2;
+}
+
 img{
     float: left;
 }
+
+button{
+    font-weight: bold;
+    margin: 5px;
+    padding: 5px;
+    font-size: 12pt;
+    background: #5a9798;
+    color: white;
+}
+
