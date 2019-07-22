@@ -16,28 +16,6 @@ function mkButtons(){
         };
 };
 
-//Animate giphs
-function animateGiphs(){
-    $('.showGiphs').empty();
-    var giphTopic = $(this).attr('topic');
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ 
-                    giphTopic +"&api_key="+ 
-                    apiKey +"&limit="+ 
-                    limit +"";
-    $.ajax({
-        url: queryURL,
-        method: "GET"
-        }).then(function(giphyResponse){
-            var giphs = giphyResponse.data;
-            for(i = 0; i < giphs.length; i++){
-                var showAnimate = $('<img>');
-                showAnimate.attr('src', giphs[i].images.fixed_height.url);
-                //$('.showGiphs').append(showAnimate);
-                $(showAnimate).appendTo('.showGiphs');
-            }
-        });
-};
-
 //Display giphs
 function displayGiphs(){
     var giphTopic = $(this).attr('topic');
@@ -52,26 +30,36 @@ function displayGiphs(){
         })
             .then(function(giphyResponse) {
                 var giphs = giphyResponse.data;
-                console.log(giphs);
+                //console.log(giphs);
                 for(i = 0; i < giphs.length; i++){
                 var giphDiv = $('<div>').addClass('column');
                 var rating = giphs[i].rating;
                 var brTag = $('<br>')
                 var spanTag = $('<span>').html('Rating: ' + rating + '<br><br>').addClass('rating');
                 var showImage = $('<img>');
-                showImage.attr('giphId', giphs[i].id);
+                showImage.attr('still-src', giphs[i].images.fixed_height_still.url);
+                showImage.attr('animate-src', giphs[i].images.fixed_height.url);
                 showImage.attr('src', giphs[i].images.fixed_height_still.url).addClass('showGiphs');
+                showImage.attr('giph-state', 'still');
                 giphDiv.prepend(brTag, spanTag);
                 giphDiv.append(showImage);
-                $('#giphs').prepend(giphDiv);
-                
+                $('#giphs').prepend(giphDiv);   
             };
-            $('.showGiphs').on('click', function(){
-                                   
-                showImage.attr('src', giphs[i].images.fixed_height.url);
-                giphDiv.append(showImage);
-        });
             });
+};
+
+function animateGiphs(){
+    $('.showGiphs').on('click', function(){
+        var giphState = $(this).attr('giph-state');
+
+        if (giphState === 'still'){
+            $(this).attr('src', $(this).attr('animate-src'));
+            $(this).attr('giph-state', 'animate');
+        }else {
+            $(this).attr('src', $(this).attr('still-src'));
+            $(this).attr('giph-state', 'still');
+        };
+    });
 };
 
 $('#add-button').on('click', function(event) {
@@ -82,5 +70,6 @@ $('#add-button').on('click', function(event) {
 });
 
 $(document).on('click', '#giph-button', displayGiphs);
+$(document).on('click', '.showGiphs', animateGiphs);
 
 mkButtons();       
