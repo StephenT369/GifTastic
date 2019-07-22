@@ -14,20 +14,38 @@ function mkButtons(){
          button.attr('topic', buttonText);
          
         };
-        console.log(topics);
 };
 
-
-//Display Pics
-function displayPics(){
+//Animate giphs
+function animateGiphs(){
+    $('.showGiphs').empty();
     var giphTopic = $(this).attr('topic');
-    $('#giphs').empty();
-    
     var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ 
                     giphTopic +"&api_key="+ 
                     apiKey +"&limit="+ 
                     limit +"";
-    console.log(queryURL);
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+        }).then(function(giphyResponse){
+            var giphs = giphyResponse.data;
+            for(i = 0; i < giphs.length; i++){
+                var showAnimate = $('<img>');
+                showAnimate.attr('src', giphs[i].images.fixed_height.url);
+                //$('.showGiphs').append(showAnimate);
+                $(showAnimate).appendTo('.showGiphs');
+            }
+        });
+};
+
+//Display giphs
+function displayGiphs(){
+    var giphTopic = $(this).attr('topic');
+    $('#giphs').empty();
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ 
+                    giphTopic +"&api_key="+ 
+                    apiKey +"&limit="+ 
+                    limit +"";
     $.ajax({
         url: queryURL,
         method: "GET"
@@ -41,35 +59,28 @@ function displayPics(){
                 var brTag = $('<br>')
                 var spanTag = $('<span>').html('Rating: ' + rating + '<br><br>').addClass('rating');
                 var showImage = $('<img>');
+                showImage.attr('giphId', giphs[i].id);
                 showImage.attr('src', giphs[i].images.fixed_height_still.url).addClass('showGiphs');
-
                 giphDiv.prepend(brTag, spanTag);
                 giphDiv.append(showImage);
                 $('#giphs').prepend(giphDiv);
                 
-                $('.showGiphs').on('click', function(){
-                    showImage.attr('src', giphs[i].images.fixed_height.url);
-                    giphDiv.append(showImage);
-                });
-
-                };
+            };
+            $('.showGiphs').on('click', function(){
+                                   
+                showImage.attr('src', giphs[i].images.fixed_height.url);
+                giphDiv.append(showImage);
+        });
             });
 };
 
 $('#add-button').on('click', function(event) {
     event.preventDefault();
-
     var newButton = $('#topic-input').val().trim();
     topics.push(newButton);
     mkButtons();
 });
 
-$(document).on('click', '#giph-button', displayPics);
+$(document).on('click', '#giph-button', displayGiphs);
 
-mkButtons();
-
-
-
-
-
-       
+mkButtons();       
